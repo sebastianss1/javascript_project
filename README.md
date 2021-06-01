@@ -23,28 +23,20 @@ In addition, this project will include:
 ## Wireframes
 This app will consist of a single screen with a text input area and some levers to change toggle between all settings listed in the Functionality and MVP section. The app will also have nav links to the Github, my LinkedIn, and the About modal. 
 
-wireframes
-
-Architecture and Technologies
+## Architecture and Technologies
 NB: one of the main things you should be researching and deciding upon while you write this proposal is what technologies you plan to use. Identify and create a plan of attack for the major technical challenges in your project.
 
 This project will be implemented with the following technologies:
 
-JavaScript for game logic,
-Foo.js with HTML5 Baz for effects rendering,
-Browserify to bundle js files.
-In addition to the entry file, there will be three scripts involved in this project:
+* Javascript
+* p5js
 
-board.js: this script will handle the logic for creating and updating the necessary Foo.js elements and rendering them to the DOM.
-
-automata.js: this script will handle the logic behind the scenes. An Automata object will hold a type (hexagon, triangle, or square) and a 2D array of Cells. It will be responsible for doing neighbor checks for each Cell upon iteration and updating the Cell array appropriately.
-
-cell.js: this lightweight script will house the constructor and update functions for the Cell objects. Each Cell will contain a type (hexagon, triangle, or square) and an aliveState (true or false).
 
 ## Implementation Timeline
-Day 1: Research how I will be implimenting this project. Most likely Vanilla JS. 
-Setup all necessary Node modules, including getting webpack up and running. Write a basic entry file and the bare bones of all 3 scripts outlined above. 
+Day 1: Learn as much as possible about p5js and how I can use it for my project. Set up all necessary Node modules, including getting webpack up and running. Write a basic entry file and the bare bones of all 3 scripts outlined above. 
 
-Day 2: 
-Day 3: 
-Day 4: 
+Day 2: Continue researching the best way to implement this project.
+
+Day 3: Start coding
+
+Day 4: Continue coding and finalize.
