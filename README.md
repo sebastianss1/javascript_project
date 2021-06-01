@@ -1,237 +1,50 @@
-## Node Version Manager (NVM)
-- To find out which version of node your machine is currently running, use the command `node -v` in your terminal
-- We want to build our projects in the latest stable build that is supported by all of our dependencies.
-- For easy node version management, we'll use the [Node Version Manager](https://github.com/nvm-sh/nvm)
-  
-### Installation and Config
-We can use homebrew to install the manager:
-1. update homebrew with `brew update`
-2. install the manager with `brew install nvm`
-3. make a directory for the manger in your root folder with `mkdir ~/.nvm`
-4. in your `~/.zshrc` file for zsh users or in your `.bash_profile` for bash users, add the following:
+# Sebastian's Type Manipulator 
 
-   ```
-   export NVM_DIR=~/.nvm
-   source $(brew --prefix nvm)/nvm.sh
-   ```
-5. Finally, we need to restart our terminal to load the new changes.
+## Background
 
-### Versioning
-- Once nvm is installed and configured, we want to install the needed version of node with the command `nvm install 14.15.0`
-- In order to switch node versions, use the command `nvm use <desired node version>` (in our case, we want to run `nvm use 14.15.0`)
+I have always been interested in graphic design and typefaces. Sebastian's Type Manipulator is a study of manipulating typefaces by using Javascript. This project studies the movement, color, size and scale of words. 
 
-## Project Set Up
+There will be many ways to manipulate text, outlined in the Functionality & MVP and Bonus Features sections.
 
-1. create your new project directory and `cd` into it 
-2. `git init`
-3.  create a simple `.gitignore`
-    ```
-    # .gitignore
+## Functionality & MVP
+With Sebastian's Type Manipulator, users will be able to:
 
-    /node_modules/
-    ```
-    > **NOTE WE WILL NOT IGNORE OUR BUNDLE FILES IN ORDER TO HOST ON GITHUB PAGES**
-4.  `npm init` and follow prompts
-5.  install dev dependencies
-    ```
-    npm install  @babel/core @babel/plugin-proposal-optional-chaining @babel/preset-env autoprefixer babel-loader css-loader fibers file-loader mini-css-extract-plugin postcss-loader sass sass-loader style-loader url-loader webpack webpack-cli webpack-dev-server webpack-merge --save-dev
-    ```
-6.  create basic `/src` subdirectory and file structure
-    ```
-    - src/
-        - index.js
-        styles/
-            - index.scss
-        scripts/
-    ```
-7.  In your root directory, create `webpack.common.js`
+* Type any words or phrases of their own (limit 100 characters)
+* Toggle between multiple colors 
+* Toggle movement and rotation of words
+* Select different shapes a word can create i.e. cubes or cylinders 
+* Reset all changes
 
-    ```JavaScript
-    // webpack.common.js
+In addition, this project will include:
 
-    const path = require("path");
-    const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-    const outputDir = "./dist";
+* An About modal describing how to use the Type Manipulator 
+* A production README
 
-    module.exports = {
-      entry: path.resolve(__dirname, "src", "index.js"), 
-      output: {
-        path: path.join(__dirname, outputDir),
-        filename: "[name].js",
-        publicPath: "/dist/",
-      },
-      resolve: {
-        extensions: [".js"], // if we were using React.js, we would include ".jsx"
-      },
-      module: {
-        rules: [
-          {
-            test: /\.js$/, // if we were using React.js, we would use \.jsx?$/
-            use: {
-              loader: "babel-loader",
-              options: {
-                presets: ["@babel/preset-env"],
-                plugins: ["@babel/plugin-proposal-optional-chaining"],
-                exclude: /node_modules/,
-              }, // if we were using React.js, we would include "react"
-            },
-          },
-          {
-            test: /\.css$/,
-            use: [
-              {
-                loader: MiniCssExtractPlugin.loader,
-                options: {
-                  // you can specify a publicPath here
-                  // by default it uses publicPath in webpackOptions.output
-                  publicPath: "../",
-                },
-              },
-              "css-loader",
-              "postcss-loader",
-            ],
-          },
-          {
-            test: /\.(png|jpe?g|gif)$/i,
-            use: [
-              {
-                loader: "file-loader",
-                options: {
-                  // you can specify a publicPath here
-                  // by default it uses publicPath in webpackOptions.output
-                  name: "[name].[ext]",
-                  outputPath: "images/",
-                  publicPath: "images/",
-                },
-              },
-            ],
-          },
-          {
-            test: /\.s[ca]ss/i,
-            use: [
-              {
-                loader: MiniCssExtractPlugin.loader,
-                options: {
-                  // you can specify a publicPath here
-                  // by default it uses publicPath in webpackOptions.output
-                  publicPath: "../",
-                },
-              },
-              "css-loader",
-              "resolve-url-loader",
-              {
-                loader: "sass-loader", 
-                options: {
-                  implementation: require('sass')
-                }
-              },
-              "postcss-loader",
-            ],
-          },
-        ],
-      },
-      plugins: [
-        new MiniCssExtractPlugin({
-          // Options similar to the same options in webpackOptions.output
-          // all options are optional
-          filename: "[name].css",
-          chunkFilename: "[id].css",
-          ignoreOrder: false, // Enable to remove warnings about conflicting order
-        }),
-        require("autoprefixer"),
-      ],
-    };
+## Wireframes
+This app will consist of a single screen with a text input area and some levers to change toggle between all settings listed in the Functionality and MVP section. The app will also have nav links to the Github, my LinkedIn, and the About modal. 
 
-    ```
+wireframes
 
-8.  Create `webpack.dev.js`
+Architecture and Technologies
+NB: one of the main things you should be researching and deciding upon while you write this proposal is what technologies you plan to use. Identify and create a plan of attack for the major technical challenges in your project.
 
-    ```JavaScript
-    // webpack.dev.js
-    const { merge } = require("webpack-merge");
-    const common = require("./webpack.common.js");
+This project will be implemented with the following technologies:
 
-    module.exports = merge(common, {
-      mode: "development",
-      devtool: "inline-source-map",
-      devServer: {
-        contentBase: "./",
-        watchContentBase: true,
-        open: true, // use "chrome" for PC
-      },
-    });
-    ```
+JavaScript for game logic,
+Foo.js with HTML5 Baz for effects rendering,
+Browserify to bundle js files.
+In addition to the entry file, there will be three scripts involved in this project:
 
-9.  Create `webpack.prod.js`
+board.js: this script will handle the logic for creating and updating the necessary Foo.js elements and rendering them to the DOM.
 
-    ```JavaScript
-    // webpack.prod.js
-    const { merge } = require("webpack-merge");
-    const common = require("./webpack.common.js");
+automata.js: this script will handle the logic behind the scenes. An Automata object will hold a type (hexagon, triangle, or square) and a 2D array of Cells. It will be responsible for doing neighbor checks for each Cell upon iteration and updating the Cell array appropriately.
 
-    module.exports = merge(common, {
-        mode: "production",
-        devtool: "source-map"
-    });
-    ```
+cell.js: this lightweight script will house the constructor and update functions for the Cell objects. Each Cell will contain a type (hexagon, triangle, or square) and an aliveState (true or false).
 
-10. create `postcss.config.js`
+## Implementation Timeline
+Day 1: Research how I will be implimenting this project. Most likely Vanilla JS. 
+Setup all necessary Node modules, including getting webpack up and running. Write a basic entry file and the bare bones of all 3 scripts outlined above. 
 
-    ```JavaScript
-    // postcss.config.js
-    module.exports = {
-        plugins: {
-            autoprefixer: {}
-        }
-    };
-    ```
-
-11. add `browserlist` key and update `scripts` in `package.json`
-
-    ```JavaScript
-    // package.json
-
-    ...
-
-    "browserslist": [
-    "last 1 version",
-    "> 1%",
-    "maintained node versions",
-    "not dead"
-    ],
-    "scripts": {
-       "serve": "NODE_ENV=development webpack-dev-server --config webpack.dev.js ",
-       "watch": "NODE_ENV=development webpack --watch --config webpack.dev.js ",
-       "build": "NODE_ENV=production webpack --config webpack.prod.js"
-     },
-
-    ...
-
-
-    ```
-
-12. create `index.scss` in `/src/styles`
-    - this will be a place to import all of your custom style sheets
-13. create `index.js` in `/src` directory and import style `/src/styles/index.scss`
-    ```JS
-    // src/index.js
-    import "./styles/index.scss";
-    ```
-14. create `index.html` and import `dist/main.css` and `dist/main.js` appropriately
-
-    ``` html
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-        <link rel="stylesheet" href="./dist/main.css" />
-        <title>Project Name</title>
-    </head>
-
-    <body>
-        <script src="./dist/main.js"></script>
-    </body>
-    </html>
-    ```
+Day 2: 
+Day 3: 
+Day 4: 
